@@ -2,21 +2,27 @@ package org.example;
 
 public class Main {
     public static void main(String[] args) {
-        int threadCount = 5;
 
-        MyThreadPool threadPool= new MyThreadPool(threadCount);
-        threadPool.start();
+        ThreadPool pool1 = new FixedThreadPool(5);
+        pool1.start();
 
         for (int i = 0; i < 10; i++) {
-            int finalI = i;
-            Runnable runnable = () -> {
-                System.out.println("Задача " + finalI + " выполняется в потоке " +
+            pool1.execute(() -> {
+                System.out.println("Задача выполнена в потоке " +
                         Thread.currentThread().getName());
-            };
-
-
-            threadPool.execute(runnable);
+            });
         }
-        threadPool.shutdown();
+
+        ThreadPool pool2 = new ScalableThreadPool(5,20);
+        pool2.start();
+
+        for (int i = 0; i < 15; i++) {
+            pool2.execute(() -> {
+                System.out.println("Задача выполнена в потоке " +
+                        Thread.currentThread().getName());
+            });
         }
+        pool1.shutdown();
+        pool2.shutdown();
+    }
 }

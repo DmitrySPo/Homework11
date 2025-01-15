@@ -1,25 +1,25 @@
 package org.example;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class MyThreadPool implements ThreadPool {
-    private  final ExecutorService executorService;
+public class FixedThreadPool implements ThreadPool {
+    private final ExecutorService executorService;
 
-    public MyThreadPool(int threadCount) {
-        executorService = Executors.newFixedThreadPool(threadCount);
+    public FixedThreadPool(int numThreads) {
+        executorService = Executors.newFixedThreadPool(numThreads);
     }
 
     @Override
     public void start() {
-        // потоки уже созданы при инициализации пула потоков
-
+        // потоки уже готовы к работе
     }
 
     @Override
     public void execute(Runnable runnable) {
         executorService.execute(runnable);
     }
-
+    @Override
     public void shutdown() {
         executorService.shutdown();
     }
